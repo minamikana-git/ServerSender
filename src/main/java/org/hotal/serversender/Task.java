@@ -4,11 +4,11 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
-import org.slf4j.Logger;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.TimerTask;
+import java.util.logging.Logger;
 
 public class Task extends TimerTask {
     ProxyServer server;
