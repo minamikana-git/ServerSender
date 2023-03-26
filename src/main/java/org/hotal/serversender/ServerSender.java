@@ -1,34 +1,42 @@
 package org.hotal.serversender;
 
-import com.google.inject.Inject;
-import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
-import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
-import com.velocitypowered.api.plugin.Plugin;
-import com.velocitypowered.api.proxy.ProxyServer;
-import org.java.util.logging.Logger;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+public class ServerSender extends JavaPlugin implements Listener {
+    private String destinationServer = "destination_server_name";
+    private Location destinationLocation = new Location(Bukkit.getWorld("world"), 0, 64, 0);
 
-public class ServerSender {
-    private final ProxyServer server;
-    private final Logger logger;
-    public Timer theTimer = new Timer();
-    public TimerTask task;
-    @Inject
-    public ServerSender(ProxyServer server, Logger logger) {
-        this.server = server;
-        this.logger = logger;
-        logger.info("ServerSender ready.");
+    @Override
+    public void onEnable() {
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
 
-    public void onProxyInitialization(ProxyInitializeEvent event) {
-        task = new Task(this.server, this.logger);
-        theTimer.scheduleAtFixedRate(task, new Date(), Config.intervalS * 1000l);
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        if (player.getLocation().distance(destinationLocation) < 1) {
+            teleportPlayer(player);
+        }
     }
-        public void onProxyShutdown(ProxyShutdownEvent event) {
-        theTimer.cancel();
+
+    private void teleportPlayer(Player player) {
+        // Send player to destination server
+        player.sendMessage("Teleporting to " + destinationServer);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                // Get destination server's Velocity and send to player
+                player.sendPluginMessage(ServerTeleportPlugin.this, "Velocity", destinationServer.getBytes());
+                // Teleport player to destination location
+                player.teleport(destinationLocation);
+            }
+        }.runTaskLater(this, 20L);
     }
 }
