@@ -9,7 +9,7 @@ import com.velocitypowered.api.plugin.Plugin;
 import net.hotamachisubaru.serverSender.command.SendCommand;
 
 
-@Plugin(id = "sendcommand", name = "ServerSender", version = "1.0-SNAPSHOT")
+@Plugin(id = "sendcommand", name = "ServerSender", version = "3.4.0-SNAPSHOT")
 public class ServerSender {
 
     private final ProxyServer server;
@@ -25,8 +25,8 @@ public class ServerSender {
     public void onProxyInitialization(ProxyInitializeEvent event) {
 
         this.commandManager.register("send",
-                new SendCommand(server),
-                "sendserver"
+                new SendCommand(server)
+
         );
     }
 }

@@ -1,7 +1,7 @@
 {
   "id": "serversender",
   "name": "ServerSender",
-  "version": "1.0-SNAPSHOT",
+  "version": "3.4.0-SNAPSHOT",
   "main": "net.hotamachisubaru.serverSender",
   "authors": "hotamachisubaru",
   "dependecies": {
@@ -10,8 +10,8 @@
   "commands": [
     {
       "name": "send",
-      "aliases": ["sendserver"],
-      "permission": "send.use"
+      "aliases": ["send <player> <server>"]
+
     }
   ]
 }
